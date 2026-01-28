@@ -207,7 +207,7 @@ body::before {
 }
 
 .btn-no.moving {
-    position: absolute;
+    position: absolute !important;
     z-index: 20;
 }
 
@@ -378,7 +378,7 @@ body::before {
         font-size: 1rem;
     }
 
-    .btn-no {
+    .btn-no:not(.moving) {
         position: relative;
     }
 
@@ -461,12 +461,12 @@ body::before {
 }
 
 @media (hover: none) and (pointer: coarse) {
-    .btn-no {
-        position: relative !important;
-        transform: none !important;
+    .btn-no:not(.moving) {
+        position: relative;
     }
 
     .btn-no.moving {
         position: absolute !important;
+        transform: translate(var(--x), var(--y)) !important;
     }
 }
