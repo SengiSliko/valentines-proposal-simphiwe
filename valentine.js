@@ -1,7 +1,6 @@
 let noAttempts = 0;
 const noBtn = document.getElementById('noBtn');
 const attemptsEl = document.getElementById('attempts');
-const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
 const funnyMessages = [
     "Are you sure about that? 😏",
@@ -23,7 +22,6 @@ function runAway() {
     const containerRect = container.getBoundingClientRect();
 
     noBtn.classList.add('moving');
-    noBtn.style.position = 'absolute';
 
     const maxX = containerRect.width - 100;
     const maxY = containerRect.height - 60;
@@ -31,19 +29,21 @@ function runAway() {
     const randomX = Math.random() * maxX - maxX/2;
     const randomY = Math.random() * maxY - maxY/2;
 
-    noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    let scale = 1;
+    if (noAttempts > 10) {
+        scale = 0.3;
+        noBtn.classList.add('tiny');
+        noBtn.textContent = "okay 🥺";
+    } else if (noAttempts > 5) {
+        scale = 0.6;
+        noBtn.classList.add('shrinking');
+    }
+
+    noBtn.style.setProperty('--x', `${randomX}px`);
+    noBtn.style.setProperty('--y', `${randomY}px`);
+    noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${scale})`;
 
     attemptsEl.textContent = funnyMessages[Math.min(noAttempts - 1, funnyMessages.length - 1)];
-
-    if (noAttempts > 5) {
-        noBtn.classList.add('shrinking');
-        noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.6)`;
-    }
-    if (noAttempts > 10) {
-        noBtn.classList.add('tiny');
-        noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.3)`;
-        noBtn.textContent = "okay 🥺";
-    }
 }
 
 function handleNoClick(e) {
@@ -52,12 +52,16 @@ function handleNoClick(e) {
     runAway();
 }
 
-if (isTouchDevice) {
-    noBtn.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        runAway();
-    }, { passive: false });
-}
+noBtn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    runAway();
+}, { passive: false });
+
+noBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}, { passive: false });
 
 function sayYes() {
     document.getElementById('questionContent').style.display = 'none';
