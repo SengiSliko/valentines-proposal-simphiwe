@@ -1,0 +1,472 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8b0000 60%, #c41e3a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.4;
+    animation: pulse 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.glow-orb:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    background: #ff4d6d;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.glow-orb:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    background: #c9184a;
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.glow-orb:nth-child(3) {
+    width: 200px;
+    height: 200px;
+    background: #ff758f;
+    top: 50%;
+    left: 50%;
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.2); opacity: 0.6; }
+}
+
+.container {
+    text-align: center;
+    padding: 50px 60px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.5),
+        inset 0 0 60px rgba(255, 100, 100, 0.1),
+        0 0 40px rgba(255, 77, 109, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 10;
+    animation: float 4s ease-in-out infinite;
+    max-width: 500px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.heart-icon {
+    font-size: 70px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    display: inline-block;
+    filter: drop-shadow(0 0 20px rgba(255, 77, 109, 0.8));
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+}
+
+.name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 15px 0 5px 0;
+    text-shadow: 0 0 30px rgba(255, 77, 109, 0.8);
+    letter-spacing: 2px;
+}
+
+.message {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    margin: 20px 0 30px 0;
+    font-weight: 500;
+}
+
+.highlight {
+    color: #ffb3c1;
+    font-weight: 600;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    position: relative;
+    min-height: 60px;
+}
+
+.btn {
+    padding: 16px 45px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+    color: white;
+    box-shadow:
+        0 8px 30px rgba(201, 24, 74, 0.5),
+        0 0 20px rgba(255, 77, 109, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-yes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+}
+
+.btn-yes:hover {
+    transform: scale(1.08);
+    box-shadow:
+        0 12px 40px rgba(201, 24, 74, 0.6),
+        0 0 40px rgba(255, 77, 109, 0.5);
+}
+
+.btn-no {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: absolute;
+    transition: all 0.15s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-no:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-no.shrinking {
+    transform: scale(0.6);
+    opacity: 0.6;
+}
+
+.btn-no.tiny {
+    transform: scale(0.3);
+    opacity: 0.3;
+}
+
+.btn-no.moving {
+    position: absolute;
+    z-index: 20;
+}
+
+.floating-heart {
+    position: fixed;
+    animation: floatUp 5s linear infinite;
+    opacity: 0.6;
+    z-index: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.5));
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg) scale(1);
+        opacity: 0;
+    }
+}
+
+.sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkle 2s linear infinite;
+    z-index: 3;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.success {
+    display: none;
+    text-align: center;
+}
+
+.success.show {
+    display: block;
+    animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.success .name {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.success .big-heart {
+    font-size: 120px;
+    animation: heartbeat 0.6s ease-in-out infinite;
+    display: inline-block;
+    filter: drop-shadow(0 0 40px rgba(255, 77, 109, 0.9));
+}
+
+.success-message {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.confetti {
+    position: fixed;
+    animation: confettiFall 3.5s linear forwards;
+    z-index: 100;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(1080deg);
+        opacity: 0;
+    }
+}
+
+.no-attempts {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #ffb3c1;
+    font-style: italic;
+    min-height: 25px;
+    opacity: 0.9;
+}
+
+.question-content {
+    transition: all 0.3s ease;
+}
+
+.petal {
+    position: fixed;
+    width: 15px;
+    height: 15px;
+    background: linear-gradient(135deg, #ff4d6d, #c9184a);
+    border-radius: 50% 0 50% 50%;
+    animation: petalFall 6s linear infinite;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+@keyframes petalFall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg) translateX(100px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 35px 30px;
+        margin: 20px;
+        max-width: 90vw;
+        border-radius: 25px;
+    }
+
+    .heart-icon {
+        font-size: 50px;
+    }
+
+    .name {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+
+    .message {
+        font-size: 1rem;
+        line-height: 1.7;
+        margin: 15px 0 25px 0;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        min-height: 120px;
+    }
+
+    .btn {
+        padding: 14px 40px;
+        font-size: 1rem;
+    }
+
+    .btn-no {
+        position: relative;
+    }
+
+    .no-attempts {
+        font-size: 0.85rem;
+        margin-top: 15px;
+    }
+
+    .success .big-heart {
+        font-size: 80px;
+    }
+
+    .success .name {
+        font-size: 1.8rem;
+    }
+
+    .success-message {
+        font-size: 1.1rem;
+    }
+
+    .success-message span {
+        font-size: 1.2rem !important;
+    }
+
+    .glow-orb:nth-child(1) {
+        width: 150px;
+        height: 150px;
+    }
+
+    .glow-orb:nth-child(2) {
+        width: 200px;
+        height: 200px;
+    }
+
+    .glow-orb:nth-child(3) {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 20px;
+        margin: 15px;
+    }
+
+    .heart-icon {
+        font-size: 40px;
+    }
+
+    .name {
+        font-size: 1.6rem;
+    }
+
+    .message {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .btn {
+        padding: 12px 35px;
+        font-size: 0.95rem;
+    }
+
+    .success .big-heart {
+        font-size: 60px;
+    }
+
+    .success .name {
+        font-size: 1.5rem;
+    }
+
+    .success-message {
+        font-size: 1rem;
+    }
+
+    .success-message span {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .btn-no {
+        position: relative !important;
+        transform: none !important;
+    }
+
+    .btn-no.moving {
+        position: absolute !important;
+    }
+}

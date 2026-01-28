@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Simphiwe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="valentine.css">
+</head>
+<body>
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
+    <div class="container">
+        <div class="question-content" id="questionContent">
+            <div class="heart-icon">❤️</div>
+            <h1 class="name">Simphiwe</h1>
+            <p class="message">
+                I was wondering… if we took this day <span class="highlight">slowly together</span> — would you be my Valentine? 😊💛
+            </p>
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="sayYes()">Yes 💕</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="runAway()" onclick="handleNoClick(event)">No</button>
+            </div>
+            <p class="no-attempts" id="attempts"></p>
+        </div>
+
+        <div class="success" id="successScreen">
+            <div class="big-heart">💖</div>
+            <h1 class="name">Simphiwe!</h1>
+            <p class="success-message">
+                You just made my heart skip a beat 💓<br>
+                <span style="font-size: 1.5rem;">Can't wait to spend this day with you</span>
+            </p>
+            <p style="font-size: 2.5rem; margin-top: 20px;">💛❤️💛</p>
+        </div>
+    </div>
+
+    <script src="valentine.js"></script>
+</body>
+</html>
