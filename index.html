@@ -1,42 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Simphiwe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="valentine.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Generator</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f2f2f2;
+    color: #111111;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 450px;
+    min-height: 260px;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .screen {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  button {
+    min-height: 44px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 1px solid #111111;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #111111;
+    color: #ffffff;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  button:hover {
+    background: #333333;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #dddddd;
+    border-top-color: #111111;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  #numberDisplay {
+    margin: 0;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #111111;
+  }
+
+  @media (min-width: 768px) {
+    .card {
+      padding: 48px 40px;
+    }
+
+    button {
+      width: auto;
+      padding: 0 32px;
+    }
+
+    #numberDisplay {
+      font-size: 6.5rem;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="glow-orb"></div>
-    <div class="glow-orb"></div>
-    <div class="glow-orb"></div>
 
-    <div class="container">
-        <div class="question-content" id="questionContent">
-            <div class="heart-icon">❤️</div>
-            <h1 class="name">Simphiwe</h1>
-            <p class="message">
-                I was wondering… if we took this day <span class="highlight">slowly together</span> — would you be my Valentine? 😊💛
-            </p>
-            <div class="buttons">
-                <button class="btn btn-yes" onclick="sayYes()">Yes 💕</button>
-                <button class="btn btn-no" id="noBtn" onmouseover="runAway()" onclick="handleNoClick(event)">No</button>
-            </div>
-            <p class="no-attempts" id="attempts"></p>
-        </div>
+  <main class="card">
 
-        <div class="success" id="successScreen">
-            <div class="big-heart">💖</div>
-            <h1 class="name">Simphiwe!</h1>
-            <p class="success-message">
-                You just made my heart skip a beat 💓<br>
-                <span style="font-size: 1.5rem;">Can't wait to spend this day with you</span>
-            </p>
-            <p style="font-size: 2.5rem; margin-top: 20px;">💛❤️💛</p>
-        </div>
+    <div class="screen active" id="startScreen">
+      <button id="generateButton">Generate</button>
     </div>
 
-    <script src="valentine.js"></script>
+    <div class="screen" id="loadingScreen">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="screen" id="resultScreen">
+      <p id="numberDisplay"></p>
+      <button id="generateAgainButton">Generate</button>
+    </div>
+
+  </main>
+
+<script>
+  const startScreen = document.getElementById('startScreen');
+  const loadingScreen = document.getElementById('loadingScreen');
+  const resultScreen = document.getElementById('resultScreen');
+
+  const generateButton = document.getElementById('generateButton');
+  const generateAgainButton = document.getElementById('generateAgainButton');
+  const numberDisplay = document.getElementById('numberDisplay');
+
+  const LOADING_DURATION_MS = 2500;
+
+  const DIGIT_RANGES = [
+    { min: 1, max: 9 },
+    { min: 10, max: 99 },
+    { min: 100, max: 999 }
+  ];
+
+  function generateNumber() {
+    const range = DIGIT_RANGES[Math.floor(Math.random() * DIGIT_RANGES.length)];
+    return Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+  }
+
+  function showScreen(screen) {
+    [startScreen, loadingScreen, resultScreen].forEach(function (s) {
+      s.classList.toggle('active', s === screen);
+    });
+  }
+
+  let wakeLock = null;
+
+  async function requestWakeLock() {
+    if (!('wakeLock' in navigator)) {
+      return;
+    }
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+    } catch (err) {
+      wakeLock = null;
+    }
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (wakeLock !== null && document.visibilityState === 'visible') {
+      requestWakeLock();
+    }
+  });
+
+  function runGeneration() {
+    requestWakeLock();
+    showScreen(loadingScreen);
+    setTimeout(function () {
+      numberDisplay.textContent = generateNumber();
+      showScreen(resultScreen);
+    }, LOADING_DURATION_MS);
+  }
+
+  generateButton.addEventListener('click', runGeneration);
+  generateAgainButton.addEventListener('click', runGeneration);
+</script>
+
 </body>
 </html>
